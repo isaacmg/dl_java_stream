@@ -14,15 +14,16 @@ import java.nio.file.StandardCopyOption;
 
 public class twitterCEP {
     public static void main(String args[]) throws IOException {
-        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-        File configOnDisk = new File("myFile.properties");
-        Files.copy(classloader.getResourceAsStream("myFile.properties"), configOnDisk.toPath(), StandardCopyOption.REPLACE_EXISTING);
+       // ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+        //File configOnDisk = new File("myFile.properties");
+        //Files.copy(classloader.getResourceAsStream("myFile.properties"), configOnDisk.toPath(), StandardCopyOption.REPLACE_EXISTING);
         final ParameterTool params = ParameterTool.fromPropertiesFile("myFile.properties");
         TwitterSource twitterConnect = new TwitterSource(params.getProperties());
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
         DataStream twitterStream;
-        //witterStream = env.addSource(twitterConnect);
+        twitterStream = env.addSource(twitterConnect);
+        twit
 
 
 
