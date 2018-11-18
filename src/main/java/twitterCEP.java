@@ -13,7 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 
 public class twitterCEP {
-    public static void main(String args[]) throws IOException {
+    public static void main(String args[]) throws IOException, Exception {
        // ClassLoader classloader = Thread.currentThread().getContextClassLoader();
         //File configOnDisk = new File("myFile.properties");
         //Files.copy(classloader.getResourceAsStream("myFile.properties"), configOnDisk.toPath(), StandardCopyOption.REPLACE_EXISTING);
@@ -23,9 +23,10 @@ public class twitterCEP {
 
         DataStream twitterStream;
         twitterStream = env.addSource(twitterConnect);
-        twit
-
+        twitterStream.print();
+        env.execute("Window WordCount");
 
 
     }
 }
+

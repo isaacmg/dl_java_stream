@@ -40,6 +40,14 @@
                 <artifactId>flink-connector-twitter_2.11</artifactId>
                 <version>1.6.2</version>
             </dependency>
+            <!-- https://mvnrepository.com/artifact/commons-logging/commons-logging -->
+            <dependency>
+                <groupId>commons-logging</groupId>
+                <artifactId>commons-logging</artifactId>
+                <version>1.2</version>
+            </dependency>
+
+
 
 
 
