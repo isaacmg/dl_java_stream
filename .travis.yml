@@ -1,0 +1,32 @@
+
+dist: "trusty"
+sudo: required
+language: java
+before_install:
+  - VERBOSE=0
+  - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
+  - bash miniconda.sh -b -p $HOME/miniconda
+  - export PATH="$HOME/miniconda/bin:$PATH"
+  - hash -r
+  - conda config --set always_yes yes --set changeps1 no
+  - conda update -q conda
+  # Useful for debugging any issues with conda
+  - conda info -a
+
+  # Replace dep1 dep2 ... with your dependencies
+  - conda create -q -n test-environment python=3.7.1
+  - source activate test-environment
+  - pip install --quiet jep 
+  - pip show jep | grep Location
+  - sudo cp $HOME/miniconda/envs/test-environment/lib/python3.7/site-packages/jep/libjep.so /lib
+  - pip install --quiet allennlp 
+  - mvn -U -q clean install 
+
+env:
+  - LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libpython3.7m.so.1.0, JAVA_OPTS=Djava.library.path=$HOME/miniconda/envs/test-environment/python3.7/site-packages/jep
+
+jdk:
+  - oraclejdk8
+
+script:
+  mvn -Djava.library.path=$HOME/miniconda/envs/test-environment/lib/python3.7/site-packages/jep test 
