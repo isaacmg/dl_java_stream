@@ -6,7 +6,6 @@ import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.connectors.twitter.TwitterSource;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
