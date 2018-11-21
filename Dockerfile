@@ -1,7 +1,5 @@
 FROM flink:latest
-RUN apt-get update
-RUN apt-get install -y libgl1-mesa-glx apt-utils openssh-server net-tools
-# Conda update and creation of environment
+FROM continuumio/anaconda:latest
 RUN conda update conda && \
     conda env create -f environment.yml && \
     # Activation of environment and correction of bash
