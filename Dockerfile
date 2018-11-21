@@ -1,9 +1,11 @@
 FROM flink:latest
 FROM continuumio/anaconda:latest
-RUN conda create -q -n test-environment python=3.7.1
-ENV PATH /opt/conda/envs/test-environmentbin:$PATH
+RUN conda create -q -n jep_env python=3.7.1
+ENV PATH /opt/conda/envs/jep_env/bin:$PATH
+ENV CONDA_DEFAULT_ENV jep_env
+ENV CONDA_PREFIX /opt/conda/envs/jep_env
 RUN echo $PATH
-RUN source activate test-environment
+RUN source activate jep_env
 RUN pip install --quiet jep 
 RUN pip show jep | grep Location
 RUN sudo cp $HOME/miniconda/envs/test-environment/lib/python3.7/site-packages/jep/libjep.so /lib
