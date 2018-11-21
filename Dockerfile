@@ -1,5 +1,4 @@
 FROM flink
-RUN apt-get install -y python3-pip
 RUN wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
 RUN bash miniconda.sh -b -p $HOME/miniconda
 RUN export PATH="$HOME/miniconda/bin:$PATH"
@@ -18,4 +17,4 @@ RUN apk add --update git && \
 apk add git
 RUN git clone https://github.com/isaacmg/dl_java_stream.git
 WORKDIR "dl_java_stream"
-#RUN mvn -U -q clean install
+RUN mvn -U -q clean install
