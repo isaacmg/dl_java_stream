@@ -1,32 +1,21 @@
 FROM flink
 RUN apt-get install -y python3-pip
-RUN pip3 install jep
-RUN mkdir -p /lib
-RUN pip3 show jep | grep Location
-#RUN cp /usr/local/lib/python3.7/dist-packages/jep/{jep-3.7.1.jar,libjep.so} /lib
-ENV LD_PRELOAD /usr/lib/x86_64-linux-gnu/libpython3.7m.so.1.0
-
-RUN pip3 install  numpy 
-RUN pip3 install  pymc3 
-RUN pip3 install six
-RUN pip3 install urllib3
-RUN pip3 install pandas
-RUN pip3 install requests
-RUN pip3 install urllib3 	
-RUN pip3 install six
-RUN pip3 install lxml
-RUN pip3 install JPype1==0.6.2
-RUN pip3 install jep
-RUN pip3 install baostock
-RUN pip3 install bs4
-RUN pip3 install tushare
-RUN pip3 install numpy
-RUN pip3 install allenai
-RUN pip3 install caffe2
-ENV JAVA_OPTS  "-Djava.library.path=/usr/local/lib/python3.7/dist-packages/jep"
-
-#RUN sbt "runMain com.sushant.example.KerasScala"
-#RUN  libpython3.6-dev
-CMD ["/usr/bin/java"]
-WORKDIR /data
-ENTRYPOINT ["/usr/bin/java", "-Djava.library.path=/usr/local/lib/python3.7/dist-packages/jep"]
+RUN wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
+RUN bash miniconda.sh -b -p $HOME/miniconda
+RUN export PATH="$HOME/miniconda/bin:$PATH"
+RUN hash -r
+RUN conda config --set always_yes yes --set changeps1 no
+RUN conda update -q conda
+RUN conda info -a
+RUN conda create -q -n test-environment python=3.7.1
+RUN source activate test-environment
+RUN pip install --quiet jep 
+RUN pip show jep | grep Location
+RUN sudo cp $HOME/miniconda/envs/test-environment/lib/python3.7/site-packages/jep/libjep.so /lib
+RUN conda install pytorch-nightly-cpu -c pytorch
+RUN pip install --quiet allennlp
+RUN apk add --update git && \
+apk add git
+RUN git clone https://github.com/isaacmg/dl_java_stream.git
+WORKDIR "dl_java_stream"
+#RUN mvn -U -q clean install
