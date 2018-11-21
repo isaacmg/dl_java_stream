@@ -1,7 +1,11 @@
-FROM flink:1.6
-RUN wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
-RUN bash miniconda.sh -b -p $HOME/miniconda
-ENV PATH="$HOME/miniconda/bin:$PATH"
+FROM flink:latest
+RUN apt-get update
+RUN apt-get install -y libgl1-mesa-glx apt-utils openssh-server net-tools
+# Conda update and creation of environment
+RUN conda update conda && \
+    conda env create -f environment.yml && \
+    # Activation of environment and correction of bash
+    echo "source activate xlshp_env" > ~/.bash
 RUN hash -r
 RUN conda config --set always_yes yes --set changeps1 no
 RUN conda update -q conda
