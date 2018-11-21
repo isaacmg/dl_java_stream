@@ -1,7 +1,7 @@
 FROM flink:latest
 FROM continuumio/anaconda:latest
 RUN conda create -q -n test-environment python=3.7.1
-ENV PATH /opt/conda/envs/testenv/bin:$PATH
+ENV PATH /opt/conda/envs/test-environment/bin:$PATH
 RUN source activate test-environment
 RUN pip install --quiet jep 
 RUN pip show jep | grep Location
