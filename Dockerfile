@@ -1,7 +1,7 @@
-FROM flink
+FROM flink:1.6
 RUN wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
 RUN bash miniconda.sh -b -p $HOME/miniconda
-RUN export PATH="$HOME/miniconda/bin:$PATH"
+ENV PATH="$HOME/miniconda/bin:$PATH"
 RUN hash -r
 RUN conda config --set always_yes yes --set changeps1 no
 RUN conda update -q conda
