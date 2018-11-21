@@ -1,13 +1,5 @@
 FROM flink:latest
 FROM continuumio/anaconda:latest
-RUN conda update conda && \
-    conda env create -f environment.yml && \
-    # Activation of environment and correction of bash
-    echo "source activate xlshp_env" > ~/.bash
-RUN hash -r
-RUN conda config --set always_yes yes --set changeps1 no
-RUN conda update -q conda
-RUN conda info -a
 RUN conda create -q -n test-environment python=3.7.1
 RUN source activate test-environment
 RUN pip install --quiet jep 
