@@ -1,4 +1,4 @@
-FROM flink:lastest as flink
+FROM flink:latest as flink
 FROM continuumio/anaconda:latest AS conda
 RUN mkdir jdk
 COPY --from=flink /usr/lib/jvm/java-1.8-openjdk/jre jdk
