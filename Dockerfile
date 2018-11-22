@@ -2,6 +2,7 @@ FROM flink:latest as flink
 FROM continuumio/anaconda:latest AS conda
 RUN mkdir jdk
 RUN echo "$JAVA_HOME"
+RUN echo "hii"
 COPY --from=flink /usr/lib/jvm/java-1.8-openjdk ./jdk
 ENV JAVA_HOME /jdk/java-1.8-openjdk 
 RUN conda create -q -n jep_env python=3.7.1
