@@ -1,4 +1,5 @@
 FROM flink:latest as flink
+RUN echo "hi"
 RUN echo "$JAVA_HOME"
 FROM continuumio/anaconda:latest AS conda
 RUN mkdir jdk
