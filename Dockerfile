@@ -1,9 +1,11 @@
+FROM flink:lastest as flink
 FROM continuumio/anaconda:latest AS conda
+RUN mkdir jdk
+COPY --from=flink /usr/lib/jvm/java-1.8-openjdk/jre jdk
+ENV JAVA_HOME jdk
 RUN conda create -q -n jep_env python=3.7.1
 RUN /bin/bash -c "source activate jep_env"
 RUN pip install --upgrade pip
-FROM flink:latest
-COPY --from=conda / /
 RUN pip install jep 
 RUN pip show jep | grep Location
 RUN sudo cp $HOME/miniconda/envs/test-environment/lib/python3.7/site-packages/jep/libjep.so /lib
