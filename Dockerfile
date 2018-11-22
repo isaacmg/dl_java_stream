@@ -3,8 +3,8 @@ RUN echo "hi"
 RUN echo "$JAVA_HOME"
 FROM continuumio/anaconda:latest AS conda
 RUN mkdir jdk
-COPY --from=flink /usr/lib/jvm/java-1.8-openjdk ./jdk
-ENV JAVA_HOME /jdk/java-1.8-openjdk 
+COPY --from=flink /docker-java-home/jre  ./jdk
+ENV JAVA_HOME /jdk
 RUN conda create -q -n jep_env python=3.7.1
 RUN /bin/bash -c "source activate jep_env"
 RUN pip install --upgrade pip
