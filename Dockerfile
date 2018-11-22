@@ -1,5 +1,5 @@
 FROM flink:latest as flink
-
+ENV JAVA_HOME /docker-java-home
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 ENV PATH /opt/conda/bin:$PATH
 
@@ -20,7 +20,6 @@ RUN apt-get install -y curl grep sed dpkg && \
     dpkg -i tini.deb && \
     rm tini.deb && \
     apt-get clean
-
 RUN conda create -q -n jep_env python=3.7.1
 RUN /bin/bash -c "source activate jep_env"
 RUN pip install --upgrade pip
