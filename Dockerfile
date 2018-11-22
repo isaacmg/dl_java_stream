@@ -1,5 +1,4 @@
-FROM flink:latest as flink
-ENV JAVA_HOME /docker-java-home
+FROM openjdk:11.0.1-jdk
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 ENV PATH /opt/conda/bin:$PATH
 
