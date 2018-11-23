@@ -25,10 +25,11 @@ RUN apt-get install -y curl grep sed dpkg && \
     apt-get clean
 RUN conda create -q -n jep_env python=3.7.1
 RUN /bin/bash -c "source activate jep_env"
+ENV PATH /opt/conda/envs/jep_env/bin:$PATH
 RUN pip install --upgrade pip
 RUN pip install jep 
 RUN pip show jep | grep Location
-RUN sudo cp $HOME/miniconda/envs/test-environment/lib/python3.7/site-packages/jep/libjep.so /lib
+RUN cp $HOME/miniconda/envs/test-environment/lib/python3.7/site-packages/jep/libjep.so /lib
 RUN conda install pytorch-nightly-cpu -c pytorch
 RUN pip install --quiet allennlp
 RUN apk add --update git && \
