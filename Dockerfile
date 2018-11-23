@@ -37,10 +37,10 @@ ENV PYTHONHOME /opt/conda/envs/jep_env
 RUN pip install --upgrade pip
 RUN pip install jep 
 RUN pip install model_agnostic
-#RUN pip install onnx
 RUN pip show jep | grep Location
 # RUN cp /opt/conda/envs/jep_env/lib/python3.7/site-packages/jep/libjep.so /lib
-RUN conda install pytorch-nightly-cpu -c pytorch
+# RUN conda install pytorch-nightly-cpu -c pytorch
+# RUN conda install -c conda-forge onnx 
 RUN pip install --quiet allennlp
 RUN apk add --update git && \
 apk add git
