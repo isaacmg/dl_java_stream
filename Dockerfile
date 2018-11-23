@@ -23,18 +23,21 @@ RUN apt-get install -y curl grep sed dpkg && \
     dpkg -i tini.deb && \
     rm tini.deb && \
     apt-get clean
+
 RUN conda create -q -n jep_env python=3.7.1
 RUN /bin/bash -c "source activate jep_env"
 ENV PATH /opt/conda/envs/jep_env/bin:$PATH
+ENV PYTHONHOME /opt/conda/envs/jep_env
 RUN pip install --upgrade pip
 RUN pip install jep 
 RUN pip show jep | grep Location
-RUN cp $HOME/miniconda/envs/test-environment/lib/python3.7/site-packages/jep/libjep.so /lib
+# RUN cp /opt/conda/envs/jep_env/lib/python3.7/site-packages/jep/libjep.so /lib
 RUN conda install pytorch-nightly-cpu -c pytorch
 RUN pip install --quiet allennlp
 RUN apk add --update git && \
 apk add git
-# Flink shit
+
+# Flink setup
 RUN apk add --no-cache bash libc6-compat snappy 'su-exec>=0.2'
 
 # Configure Flink version
