@@ -26,6 +26,8 @@ RUN apt-get install -y curl grep sed dpkg && \
     apt-get clean
 
 # CMAKE needed for ONNX
+RUN apt-get update -y
+#RUN apt-get update
 RUN apt-get install cmake
 
 RUN conda create -q -n jep_env python=3.7.1
