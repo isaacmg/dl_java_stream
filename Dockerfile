@@ -36,7 +36,7 @@ ENV PATH /opt/conda/envs/jep_env/bin:$PATH
 ENV PYTHONHOME /opt/conda/envs/jep_env
 RUN pip install --upgrade pip && \ 
 	pip install --quiet jep && \
-	pip install model_agnostic && \
+	pip install --quiet model_agnostic && \
 	pip show jep | grep Location && \
 	pip install allennlp
 
