@@ -44,11 +44,14 @@ RUN pip show jep | grep Location
 RUN apt-get install build-essential libssl-dev libffi-dev python-dev -y
 RUN apt-get install python3-dev -y
 RUN pip install allennlp
-RUN apk add --update git && \
-apk add git
+
 
 # Flink setup
-RUN apk add --no-cache bash libc6-compat snappy 'su-exec>=0.2'
+RUN set -ex; \
+  apt-get -y install libsnappy1v5; \
+  rm -rf /var/lib/apt/lists/*
+
+RUN apt-get install -y git
 
 # Configure Flink version
 ENV FLINK_VERSION=1.6.2 \
