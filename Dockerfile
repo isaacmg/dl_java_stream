@@ -1,5 +1,4 @@
 FROM openjdk:11.0.1-jdk
-ARG CACHE_DATE=2018-09-01
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 ENV PATH /opt/conda/bin:$PATH
 
@@ -27,17 +26,15 @@ RUN apt-get install -y curl grep sed dpkg && \
     apt-get clean
 
 # CMAKE needed for ONNX
-RUN apt-get update -y
-#RUN apt-get update
-RUN apt-get install -y cmake
-RUN apt-get install build-essential -y
+RUN apt-get update -y && \
+	apt-get install -y cmake
 RUN conda create -q -n jep_env python=3.7.1
 RUN /bin/bash -c "source activate jep_env"
 ENV PATH /opt/conda/envs/jep_env/bin:$PATH
 ENV PYTHONHOME /opt/conda/envs/jep_env
-RUN pip install --upgrade pip
-RUN pip install --quiet jep 
-RUN pip install model_agnostic
+RUN pip install --upgrade pip && \ 
+	pip install --quiet jep && \
+	pip install model_agnostic
 RUN pip show jep | grep Location
 # RUN cp /opt/conda/envs/jep_env/lib/python3.7/site-packages/jep/libjep.so /lib
 # RUN conda install pytorch-nightly-cpu -c pytorch
@@ -45,7 +42,6 @@ RUN pip show jep | grep Location
 RUN apt-get install build-essential libssl-dev libffi-dev python-dev -y
 RUN apt-get install python3-dev -y
 RUN pip install allennlp
-
 
 # Flink setup
 RUN set -ex; \
