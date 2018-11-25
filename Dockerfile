@@ -4,7 +4,8 @@ ENV PATH /opt/conda/bin:$PATH
 
 RUN apt-get update --fix-missing && apt-get install -y wget bzip2 ca-certificates \
     libglib2.0-0 libxext6 libsm6 libxrender1 \
-    git mercurial subversion
+    git mercurial subversion &&\
+    rm -rf /var/lib/apt/lists/*
 
 RUN apt-get update && \
     apt-get -y install gcc mono-mcs && \
@@ -27,21 +28,22 @@ RUN apt-get install -y curl grep sed dpkg && \
 
 # CMAKE needed for ONNX
 RUN apt-get update -y && \
-	apt-get install -y cmake
+	apt-get install -y cmake 
+RUN apt-get install build-essential libssl-dev libffi-dev python3-dev -y
 RUN conda create -q -n jep_env python=3.7.1
 RUN /bin/bash -c "source activate jep_env"
 ENV PATH /opt/conda/envs/jep_env/bin:$PATH
 ENV PYTHONHOME /opt/conda/envs/jep_env
 RUN pip install --upgrade pip && \ 
 	pip install --quiet jep && \
-	pip install model_agnostic
-RUN pip show jep | grep Location
+	pip install model_agnostic && \
+	pip show jep | grep Location && \
+	pip install allennlp
+
 # RUN cp /opt/conda/envs/jep_env/lib/python3.7/site-packages/jep/libjep.so /lib
 # RUN conda install pytorch-nightly-cpu -c pytorch
 # RUN conda install -c conda-forge onnx 
-RUN apt-get install build-essential libssl-dev libffi-dev python-dev -y
-RUN apt-get install python3-dev -y
-RUN pip install allennlp
+
 
 # Flink setup
 RUN set -ex; \
