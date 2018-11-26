@@ -59,8 +59,9 @@ ENV FLINK_VERSION=1.6.2 \
 # Prepare environment
 ENV FLINK_HOME=/opt/flink
 ENV PATH=$FLINK_HOME/bin:$PATH
-RUN addgroup -S -g 9999 flink && \
-    adduser -D -S -H -u 9999 -G flink -h $FLINK_HOME flink
+RUN groupadd --system --gid=9999 flink && \
+    useradd --system --home-dir $FLINK_HOME --uid=9999 --gid=flink flink
+
 WORKDIR $FLINK_HOME
 
 ENV FLINK_URL_FILE_PATH=flink/flink-${FLINK_VERSION}/flink-${FLINK_VERSION}-bin-${HADOOP_SCALA_VARIANT}.tgz
@@ -73,13 +74,6 @@ COPY KEYS /KEYS
 
 # Install Flink
 RUN set -ex; \
-  apk add --no-cache --virtual .build-deps \
-    ca-certificates \
-    gnupg \
-    openssl \
-    tar \
-  ; \
-  \
   wget -nv -O flink.tgz "$FLINK_TGZ_URL"; \
   wget -nv -O flink.tgz.asc "$FLINK_ASC_URL"; \
   \
@@ -91,8 +85,6 @@ RUN set -ex; \
   \
   tar -xf flink.tgz --strip-components=1; \
   rm flink.tgz; \
-  \
-  apk del .build-deps; \
   \
   chown -R flink:flink .;
 
