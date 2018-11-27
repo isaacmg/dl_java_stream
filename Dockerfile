@@ -51,7 +51,7 @@ RUN set -ex; \
   rm -rf /var/lib/apt/lists/*
 
 RUN apt-get install -y git
- Grab gosu for easy step-down from root
+ #Grab gosu for easy step-down from root
 ENV GOSU_VERSION 1.7
 
 RUN set -ex; \
