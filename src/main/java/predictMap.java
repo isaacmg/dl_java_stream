@@ -13,15 +13,12 @@ import java.util.StringTokenizer;
 
 public class predictMap extends RichMapFunction<TweetData, String>{
     @Override
-    public String map( TweetData s) throws jep.JepException {
+    public String map(TweetData s) throws jep.JepException {
         //JepConfig j = new JepConfig();
         //j.addIncludePaths("");
         Jep theJep = new Jep();
         theJep.runScript("src/python/new_test.py");
         theJep.eval("import NewTest");
-
-
-
         return "none";
     }
 }
