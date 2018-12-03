@@ -4,6 +4,7 @@ import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.common.functions.RichMapFunction;
 import org.apache.flink.api.java.tuple.Tuple2;
+import org.apache.flink.shaded.jackson2.com.fasterxml.jackson.core.JsonParseException;
 import org.apache.flink.shaded.jackson2.com.fasterxml.jackson.databind.JsonNode;
 import org.apache.flink.shaded.jackson2.com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.flink.util.Collector;
@@ -26,11 +27,12 @@ public class predictMap extends RichMapFunction<TweetData, String>{
 
         //theJep.runScript("src/python/new_test.py");
         theJep.eval("from new_test import NewTest");
-        theJep.eval("s = NewTest()");
-        theJep.eval("s.preprocess()");
-
+        //theJep.eval("s = NewTest()");
+        theJep.set("text", s.tweetText);
+        //Object result = theJep.getValue("s.run(text)");
+        //String res = result.toString();
         theJep.close();
-        return "none";
+        return "n";
     }
 }
 
@@ -50,9 +52,17 @@ class BasicTweet implements MapFunction<String, TweetData> {
             if(jsonParser == null) {
                     jsonParser = new ObjectMapper();
                 }
+            System.out.println(s);
+            String text;
+            try {
+                JsonNode jsonNode = jsonParser.readValue(s, JsonNode.class);
+                 text = getField(jsonNode, "text");
+            }
+            catch(JsonParseException a){
+                text = "None ";
 
-            JsonNode jsonNode = jsonParser.readValue(s, JsonNode.class);
-            String text = getField(jsonNode, "text");
+            }
+
             //String lang = getField(jsonNode.get("user"), "lang");
 
 

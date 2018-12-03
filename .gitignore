@@ -3,3 +3,4 @@ myFile.properties
 Target/generated-soruces
 targe/classes
 *.class
+*.log
