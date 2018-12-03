@@ -15,10 +15,18 @@ public class predictMap extends RichMapFunction<TweetData, String>{
     @Override
     public String map(TweetData s) throws jep.JepException {
         //JepConfig j = new JepConfig();
-        //j.addIncludePaths("");
-        Jep theJep = new Jep();
-        theJep.runScript("src/python/new_test.py");
-        theJep.eval("import NewTest");
+
+        JepConfig config = new JepConfig();
+        config.addIncludePaths("src/python");
+        Jep theJep = config.createJep();
+
+
+        // jep
+
+
+        //theJep.runScript("src/python/new_test.py");
+        theJep.eval("from new_test import NewTest");
+        theJep.close();
         return "none";
     }
 }
