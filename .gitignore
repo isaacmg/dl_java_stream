@@ -4,3 +4,6 @@ Target/generated-soruces
 targe/classes
 *.class
 *.log
+*.gz
+*.pyc
+*.pyc

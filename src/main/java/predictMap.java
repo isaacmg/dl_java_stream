@@ -29,7 +29,7 @@ public class predictMap extends RichMapFunction<TweetData, String>{
 
         //theJep.runScript("src/python/new_test.py");
 
-        theJep.eval("from new_test import NewTest");
+        theJep.eval("from new_pred import NewTest");
         theJep.eval("s = NewTest()");
         theJep.set("text", s.tweetText);
         Object result = theJep.getValue("s.run(text)");
