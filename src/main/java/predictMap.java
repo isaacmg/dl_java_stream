@@ -19,6 +19,8 @@ public class predictMap extends RichMapFunction<TweetData, String>{
 
         JepConfig config = new JepConfig();
         config.addIncludePaths("src/python");
+        config.addSharedModules("numpy");
+        config.addSharedModules("allennlp");
         Jep theJep = config.createJep();
 
 
@@ -26,13 +28,15 @@ public class predictMap extends RichMapFunction<TweetData, String>{
 
 
         //theJep.runScript("src/python/new_test.py");
+
         theJep.eval("from new_test import NewTest");
-        //theJep.eval("s = NewTest()");
+        theJep.eval("s = NewTest()");
         theJep.set("text", s.tweetText);
-        //Object result = theJep.getValue("s.run(text)");
-        //String res = result.toString();
+        Object result = theJep.getValue("s.run(text)");
+        String res = result.toString();
+        System.out.print(res);
         theJep.close();
-        return "n";
+        return "hi";
     }
 }
 

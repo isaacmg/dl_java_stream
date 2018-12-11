@@ -24,9 +24,6 @@ public class twitterCEP {
         twitterStream.map(new BasicTweet()).map(new predictMap());
 
 
-
-
-
         env.execute("Window WordCount");
 
 
