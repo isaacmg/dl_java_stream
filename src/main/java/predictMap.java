@@ -21,6 +21,8 @@ public class predictMap extends RichMapFunction<TweetData, String>{
         config.addIncludePaths("src/python");
         config.addSharedModules("numpy");
         config.addSharedModules("allennlp");
+        config.addSharedModules("scipy");
+        config.addSharedModules("torch");
         Jep theJep = config.createJep();
 
 
