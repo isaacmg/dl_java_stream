@@ -1,5 +1,6 @@
 import jep.Jep;
 import jep.JepConfig;
+import jep.SharedInterpreter;
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.common.functions.RichMapFunction;
@@ -28,10 +29,14 @@ public class predictMap extends RichMapFunction<TweetData, String>{
 
         // jep
 
-
-        //theJep.runScript("src/python/new_test.py");
+        //theJep.runScript("src/python/new_test.py")
 
         theJep.eval("from new_pred import NewTest");
+        //theJep.eval("y=class_test()");
+        //Object result = theJep.getValue("y");
+        //System.out.println(result.toString());
+
+
         theJep.eval("s = NewTest()");
         theJep.set("text", s.tweetText);
         Object result = theJep.getValue("s.run(text)");
