@@ -35,9 +35,8 @@ public class predictMap extends RichMapFunction<TweetData, String>{
         //theJep.eval("y=class_test()");
         //Object result = theJep.getValue("y");
         //System.out.println(result.toString());
-
-
         theJep.eval("s = NewTest()");
+
         theJep.set("text", s.tweetText);
         Object result = theJep.getValue("s.run(text)");
         String res = result.toString();
