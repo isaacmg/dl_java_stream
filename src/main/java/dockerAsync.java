@@ -14,7 +14,7 @@ public class dockerAsync extends RichAsyncFunction<TweetData, String > {
         URL dockerModelURL = new URL("http://docker_container_url.com");
         HttpURLConnection conn = (HttpURLConnection) dockerModelURL.openConnection();
         conn.setRequestMethod("GET");
-        
+
 
 
 
