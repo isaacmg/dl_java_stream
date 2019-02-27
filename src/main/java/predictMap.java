@@ -24,6 +24,10 @@ public class predictMap extends RichMapFunction<TweetData, String>{
         config.addSharedModules("allennlp");
         config.addSharedModules("scipy");
         config.addSharedModules("torch");
+        config.addSharedModules("flair");
+        config.addSharedModules("onnx");
+        config.addSharedModules("caffe2");
+
         Jep theJep = config.createJep();
 
 
@@ -31,14 +35,14 @@ public class predictMap extends RichMapFunction<TweetData, String>{
 
         //theJep.runScript("src/python/new_test.py")
 
-        theJep.eval("from new_pred import NewTest");
+        //theJep.eval("from new_pred import NewTest");
         //theJep.eval("y=class_test()");
         //Object result = theJep.getValue("y");
         //System.out.println(result.toString());
-        theJep.eval("s = NewTest()");
-
+        //theJep.eval("s = NewTest()");
+        theJep.eval("from simple_onnx import run_shit");
         theJep.set("text", s.tweetText);
-        Object result = theJep.getValue("s.run(text)");
+        Object result = theJep.getValue("run_shit()");
         String res = result.toString();
         System.out.print(res);
         theJep.close();

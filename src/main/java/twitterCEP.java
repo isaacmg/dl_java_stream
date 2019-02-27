@@ -25,7 +25,7 @@ public class twitterCEP {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
         DataStream<String> twitterStream = env.addSource(twitterConnect);
-        twitterStream.map(new BasicTweet()).map(new predictMap());
+        twitterStream.map(new BasicTweet()).map(new flairMap());
 
 
         env.execute("Window WordCount");
