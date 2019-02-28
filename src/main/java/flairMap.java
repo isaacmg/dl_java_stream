@@ -2,28 +2,32 @@ import jep.Jep;
 import jep.JepConfig;
 import org.apache.flink.api.common.functions.RichMapFunction;
 import jep.SharedInterpreter;
+import org.apache.flink.configuration.Configuration;
 
 public class flairMap extends RichMapFunction<TweetData, String> {
+    private SharedInterpreter j;
+
+    @Override
+    public void open(Configuration c)
+    {
+        try {
+            j = new jep.SharedInterpreter();
+            j.eval("from flair.data import Sentence");
+            j.eval("from flair.models import SequenceTagger");
+            j.eval("model = SequenceTagger.load('ner')");
+        }
+        catch (jep.JepException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public String map(TweetData tweet) throws jep.JepException{
         try {
-            JepConfig config = new JepConfig();
-            config.addIncludePaths("src/python");
-            config.addSharedModules("numpy");
-            config.addSharedModules("gensim");
-            config.addSharedModules("torch");
-            config.addSharedModules("sklearn");
-            config.addSharedModules("flair");
-            SharedInterpreter theJep = new jep.SharedInterpreter();
-            theJep.eval("from flair.data import Sentence");
-            theJep.eval("from flair.models import SequenceTagger");
-            // Need to do more preprocessing on tweet.tweetText
-            theJep.set("text", "Some basic shit for the thing");
-            theJep.eval("s=Sentence(text)");
-            theJep.eval("model = SequenceTagger.load('ner')");
-            Object result = theJep.getValue("model.predict(s)");
+            j.set("text", "Some basic shit for the thing");
+            j.eval("s=Sentence(text)");
+            Object result = j.getValue("model.predict(s)");
             System.out.println(result.toString());
-            theJep.close();
             return result.toString();
 
 

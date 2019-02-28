@@ -7,3 +7,4 @@ targe/classes
 *.gz
 *.pyc
 *.pyc
+.DS_Store

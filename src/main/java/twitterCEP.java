@@ -23,7 +23,6 @@ public class twitterCEP {
         final ParameterTool params = ParameterTool.fromPropertiesFile("myFile.properties");
         TwitterSource twitterConnect = new TwitterSource(params.getProperties());
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-
         DataStream<String> twitterStream = env.addSource(twitterConnect);
         twitterStream.map(new BasicTweet()).map(new flairMap());
 
