@@ -68,9 +68,19 @@ class BasicTweet implements MapFunction<String, TweetData> {
                 }
             System.out.println(s);
             String text;
+            String lang = "None";
+            String user = "Unkown";
             try {
                 JsonNode jsonNode = jsonParser.readValue(s, JsonNode.class);
                  text = getField(jsonNode, "text");
+                 if (jsonNode.has("user") && jsonNode.has("lang")){
+                    lang = jsonNode.get("lang").textValue();
+                    user = jsonNode.get("user").get("id").textValue();
+
+                }
+
+
+
             }
             catch(JsonParseException a){
                 text = "None ";
@@ -82,7 +92,7 @@ class BasicTweet implements MapFunction<String, TweetData> {
 
 
 
-            return new TweetData(text, "", "",
+            return new TweetData(text, lang, user,
                     2, 3, 4);
         }
 }

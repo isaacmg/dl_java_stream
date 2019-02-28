@@ -24,12 +24,15 @@ public class twitterCEP {
         TwitterSource twitterConnect = new TwitterSource(params.getProperties());
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         DataStream<String> twitterStream = env.addSource(twitterConnect);
-        twitterStream.map(new BasicTweet()).map(new flairMap());
-
+        twitterStream.map(new BasicTweet()).filter(new FilterFunction<TweetData>() {
+            @Override
+            public boolean filter(TweetData tweetData) throws Exception {
+                return tweetData.language.equals("en");
+            }
+        }).map(new flairMap());
 
         env.execute("Window WordCount");
-
-
     }
 }
+
 
