@@ -24,13 +24,14 @@ public class flairMap extends RichMapFunction<TweetData, String> {
 
     public String map(TweetData tweet) throws jep.JepException{
         String tweetText = tweet.tweetText;
-        tweetText = tweetText.replaceAll("\\p{C}", "");
-        tweetText = tweetText.replaceAll("[^A-Za-z0-9]", "");
+        //tweetText = tweetText.replaceAll("\\p{C}", "");
+        tweetText = tweetText.replaceAll("[^A-Za-z0-9]", " ");
         System.out.println(tweetText);
         try {
             j.set("text", tweetText);
             j.eval("s=Sentence(text)");
-            Object result = j.getValue("model.predict(s)");
+            j.eval("model.predict(s)");
+            Object result = j.getValue("s.get_spans('ner')");
             System.out.println(result.toString());
             return result.toString();
 
