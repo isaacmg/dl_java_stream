@@ -21,7 +21,7 @@
 version: "2.1"
 services:
   jobmanager:
-    image: "jep"
+    image: "aistream/jep"
     expose:
       - "6123"
     ports:
@@ -31,7 +31,7 @@ services:
       - JOB_MANAGER_RPC_ADDRESS=jobmanager
 
   taskmanager:
-    image: "jep"
+    image: "aistream/jep"
     expose:
       - "6121"
       - "6122"
