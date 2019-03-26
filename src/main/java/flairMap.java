@@ -34,9 +34,6 @@ public class flairMap extends RichMapFunction<TweetData, String> {
             Object result = j.getValue("s.get_spans('ner')");
             System.out.println(result.toString());
             return result.toString();
-
-
-
         }
         catch(jep.JepException e){
             e.printStackTrace();
