@@ -1,3 +1,6 @@
+import org.apache.flink.api.java.tuple.Tuple3;
+import org.apache.flink.api.java.tuple.Tuple4;
+
 import java.util.ArrayList;
 
 public class TweetData {
@@ -5,6 +8,10 @@ public class TweetData {
     public String language;
     public String user;
     public ArrayList<String> urls;
+    // Tuple in the format T
+    public String sentiment;
+
+
 
     TweetData(String tweetText, String lang, String user, int retweetCount, int favoriteCount, int replyCount){
         this.tweetText = tweetText;

@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
 
 public class dockerAsync extends RichAsyncFunction<TweetData, String > {
     @Override
@@ -13,6 +15,7 @@ public class dockerAsync extends RichAsyncFunction<TweetData, String > {
         URL dockerModelURL = new URL("http://docker_container_url.com");
         HttpURLConnection conn = (HttpURLConnection) dockerModelURL.openConnection();
         conn.setRequestMethod("GET");
+       // CompletableFuture.supplyAsync(Supplier)
 
 
 

@@ -29,6 +29,7 @@ services:
     command: jobmanager
     environment:
       - JOB_MANAGER_RPC_ADDRESS=jobmanager
+      - PYTHONHOME=anaconda3
 
   taskmanager:
     image: "aistream/jep"
@@ -42,3 +43,4 @@ services:
       - "jobmanager:jobmanager"
     environment:
       - JOB_MANAGER_RPC_ADDRESS=jobmanager
+      - PYTHONHOME=anaconda3

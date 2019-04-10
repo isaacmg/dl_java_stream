@@ -8,3 +8,5 @@ targe/classes
 *.pyc
 *.pyc
 .DS_Store
+*.jar
+*.MF

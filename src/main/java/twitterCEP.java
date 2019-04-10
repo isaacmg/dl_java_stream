@@ -15,7 +15,7 @@ import java.nio.file.StandardCopyOption;
 
 public class twitterCEP {
     public static void main(String args[]) throws IOException, Exception {
-       // ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+        //ClassLoader classloader = Thread.currentThread().getContextClassLoader();
         //File configOnDisk = new File("myFile.properties");
         //Files.copy(classloader.getResourceAsStream("myFile.properties"), configOnDisk.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
@@ -31,7 +31,7 @@ public class twitterCEP {
             }
         }).map(new flairMap());
 
-        env.execute("Window WordCount");
+        env.execute("Flair Filter");
     }
 }
 

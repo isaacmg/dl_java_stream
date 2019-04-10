@@ -3,6 +3,8 @@ import jep.JepConfig;
 import org.apache.flink.api.common.functions.RichMapFunction;
 import jep.SharedInterpreter;
 import org.apache.flink.configuration.Configuration;
+import org.apache.flink.shaded.jackson2.com.fasterxml.jackson.databind.JsonNode;
+import scala.util.parsing.json.JSONObject;
 
 public class flairMap extends RichMapFunction<TweetData, String> {
     private SharedInterpreter j;
@@ -31,10 +33,17 @@ public class flairMap extends RichMapFunction<TweetData, String> {
             j.set("text", tweetText);
             j.eval("s=Sentence(text)");
             j.eval("model.predict(s)");
-            Object result = j.getValue("s.get_spans('ner')");
-            System.out.println(result.toString());
+            j.eval("sent = s.to_dict(tag_type='ner')");
+            j.eval("result_arr = []");
+            j.eval("for entity in sent:" + "\n"+
+                    "   result_arr.append((entity[\"text\"], entity[\"type\"]))");
+            Object result = j.getValue("result_arr");
             return result.toString();
+
+
         }
+
+
         catch(jep.JepException e){
             e.printStackTrace();
             throw e;
