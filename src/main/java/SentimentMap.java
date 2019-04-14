@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class SentimentMap implements RichMapFunction<String, List<>> {
+public class SentimentMap extends RichMapFunction<TweetData, List<Tuple3<String, String, String>>> {
     private Jep j;
     public void open(Configuration c)
     {
@@ -30,9 +30,9 @@ public class SentimentMap implements RichMapFunction<String, List<>> {
             Object o = j.getValue("result");
             System.out.println(o.toString());
             ArrayList<Tuple3<String, String, String>> s = new ArrayList<>();
-            for (tup: tweet.entsLabels){
-                Tuple3<String, String, String> fullTup = new Tuple3<>();
-                
+            for (Tuple2<String, String> tup: tweet.entsLabels){
+                Tuple3<String, String, String> fullTup = new Tuple3<>(tup.f0, tup.f1, o.toString());
+                s.add(fullTup);
 
             }
             return s ;
@@ -40,6 +40,7 @@ public class SentimentMap implements RichMapFunction<String, List<>> {
         }
         catch (jep.JepException e){
             e.printStackTrace();
+            return null ;
 
         }
 
