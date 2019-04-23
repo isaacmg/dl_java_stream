@@ -16,7 +16,7 @@ public class SentimentMap extends RichMapFunction<TweetData, List<Tuple3<String,
             j = new jep.SharedInterpreter();
             j.eval("from flair.data import Sentence");
             j.eval("from flair.models import TextClassifier");
-            j.eval("classifier = TextClassifier.load('en-sentiment')");
+            j.eval("classifier = TextClassifier.load_from_file('/Users/isaac/.flair/models/imdb.pt')");
         }
         catch (jep.JepException e) {
             e.printStackTrace();
