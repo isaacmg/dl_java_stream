@@ -9,7 +9,7 @@ public class TweetData {
     public String tweetText;
     public String language;
     public String user;
-    public List<Tuple2<String, String>> entsLabels;
+    public ArrayList<Tuple2<String, String>> entsLabels;
     public ArrayList<String> urls;
     // Tuple in the format T
     public String sentiment;

@@ -29,7 +29,7 @@ public class twitterCEP {
             public boolean filter(TweetData tweetData) throws Exception {
                 return tweetData.language.equals("en");
             }
-        }).map(new flairMap());
+        }).map(new flairMap()).flatMap(new TwitterTableMap());
 
         env.execute("Flair Filter");
     }
