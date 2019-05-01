@@ -13,13 +13,16 @@ public class TweetData {
     public ArrayList<String> urls;
     // Tuple in the format T
     public String sentiment;
+    public boolean properHashtag;
 
 
 
-    TweetData(String tweetText, String lang, String user, int retweetCount, int favoriteCount, int replyCount){
+    TweetData(String tweetText, String lang, String user, boolean tweetGood, int retweetCount, int favoriteCount,
+              int replyCount){
         this.tweetText = tweetText;
         language = lang;
         this.user = user;
+        properHashtag = tweetGood;
 
 
 
