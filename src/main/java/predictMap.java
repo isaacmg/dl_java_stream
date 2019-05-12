@@ -11,6 +11,8 @@ import org.apache.flink.shaded.jackson2.com.fasterxml.jackson.databind.ObjectMap
 import org.apache.flink.util.Collector;
 
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class predictMap extends RichMapFunction<TweetData, String>{
@@ -44,7 +46,7 @@ public class predictMap extends RichMapFunction<TweetData, String>{
         theJep.set("text", s.tweetText);
         Object result = theJep.getValue("run_shit()");
         String res = result.toString();
-        System.out.print(res);
+
         theJep.close();
         return "hi";
     }
@@ -66,24 +68,46 @@ class BasicTweet implements MapFunction<String, TweetData> {
             if(jsonParser == null) {
                     jsonParser = new ObjectMapper();
                 }
-            System.out.println(s);
+            //System.out.println(s);
             String text;
             String lang = "None";
-            String user = "Unkown";
+            String user = "Unknown";
+            boolean tweetGood = false;
+            String createdAt = "";
             try {
                 JsonNode jsonNode = jsonParser.readValue(s, JsonNode.class);
                  text = getField(jsonNode, "text");
-                 if (jsonNode.has("user") && jsonNode.has("lang")){
-                    lang = jsonNode.get("lang").textValue();
-                    user = jsonNode.get("user").get("id").textValue();
+                 if (jsonNode.has("user") && jsonNode.has("lang")) {
+                     lang = jsonNode.get("lang").textValue();
+                     user = jsonNode.get("user").get("id").textValue();
 
-                }
+                 }
+                String [] relavantHashTags = {"GOT", "GOT8", "BattleOfWinterfell", "GameOfThrones"};
+
+                 if(jsonNode.has("entities")){
+                 if(jsonNode.get("entities").get("hashtags").isArray()){
+                     for (JsonNode theNode: jsonNode.get("entities").get("hashtags")){
+
+                         if(Arrays.stream(relavantHashTags).anyMatch(theNode.get("text").textValue().trim()::equals)){
+
+                             tweetGood = true;
+                         }
+                     }
+
+                 }}
+
+                 if(jsonNode.has("created_at")){
+                     createdAt = jsonNode.get("created_at").toString();
+                 }
+
+
 
 
 
             }
             catch(JsonParseException a){
                 text = "None ";
+
 
             }
 
@@ -92,7 +116,7 @@ class BasicTweet implements MapFunction<String, TweetData> {
 
 
 
-            return new TweetData(text, lang, user,
-                    2, 3, 4);
+            return new TweetData(text, lang, user,tweetGood,
+                    2, 3, 4, createdAt);
         }
 }

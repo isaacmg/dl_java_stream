@@ -3,9 +3,13 @@ import jep.JepConfig;
 import org.apache.flink.api.common.functions.FilterFunction;
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.functions.MapFunction;
+import org.apache.flink.api.common.typeinfo.TypeInformation;
+import org.apache.flink.api.common.typeinfo.Types;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.api.java.tuple.Tuple3;
+import org.apache.flink.api.java.tuple.Tuple4;
 import org.apache.flink.api.java.utils.ParameterTool;
+import org.apache.flink.core.fs.FileSystem;
 import org.apache.flink.streaming.api.datastream.AsyncDataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.datastream.DataStream;
@@ -16,6 +20,8 @@ import org.apache.flink.streaming.connectors.twitter.TwitterSource;
 import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.Tumble;
 import org.apache.flink.table.api.java.StreamTableEnvironment;
+import org.apache.flink.table.sinks.CsvTableSink;
+import org.apache.flink.table.sinks.TableSink;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,17 +41,32 @@ public class twitterCEP {
         TwitterSource twitterConnect = new TwitterSource(params.getProperties());
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         DataStream<String> twitterStream = env.addSource(twitterConnect);
-        DataStream<Tuple3<String, String, Integer>> sentimentStream= twitterStream
+        DataStream<TweetData> sentimentStream= twitterStream
                 .map(new BasicTweet()).filter(new FilterFunction<TweetData>() {
             @Override
             public boolean filter(TweetData tweetData) throws Exception {
                 return tweetData.language.equals("en") && tweetData.properHashtag;
             }
-        }).flatMap(new TwitterTableMap());
-        //sentimentStream.keyBy(0).timeWindow(Time.seconds(10)).sum(2).print();
+        });
         DataStream<TweetData> tweetStream =  twitterStream.map(new BasicTweet());
-        tweetStream = AsyncDataStream.unorderedWait( tweetStream, new dockerAsync(), 1000, TimeUnit.MILLISECONDS, 100);
-        tweetStream.print();
+        //tweetStream = AsyncDataStream.unorderedWait( tweetStream, new dockerAsync(), 1000, TimeUnit.MILLISECONDS, 100);
+        DataStream<Tuple4<String, String, String, Integer>> secondTweet = sentimentStream.map(new tweetTupleMap());
+        sentimentStream.print();
+        secondTweet.timeWindowAll(Time.seconds(20)).sum(3);
+        StreamTableEnvironment tableEnv = StreamTableEnvironment.create(env);
+        secondTweet.print();
+        Table table = tableEnv.fromDataStream(secondTweet, "Elements, Sentiment, Time, Number");
+        TableSink sink = new CsvTableSink("new",  "|");
+        String[] fieldNames = {"a", "b", "c", "d"};
+        TypeInformation[] fieldTypes = {Types.STRING, Types.STRING, Types.STRING, Types.INT};
+        tableEnv.registerTableSink("CsvSinkTable", fieldNames, fieldTypes, sink);
+        table.insertInto("CsvSinkTable");
+
+        // res = Implement mapFunction -> Tuple3<String, List<String>, String> timeStamp as String, entities, sentiment
+        // res.keyby(0).window(
+        //flatMap tweetStream -> Tuple<String, String, String> timeStamp
+
+        //tweetStream.print();
        // sentimentStream.writeAsCsv("file.csv");
 
         //StreamTableEnvironment tableEnv = StreamTableEnvironment.create(env);

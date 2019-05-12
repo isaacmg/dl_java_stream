@@ -5,12 +5,11 @@ import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.api.java.tuple.Tuple3;
 import org.apache.flink.util.Collector;
 
-public class TwitterTableMap implements FlatMapFunction<TweetData, Tuple3<String, String, String >> {
+public class TwitterTableMap implements FlatMapFunction<TweetData, Tuple3<String, String, Integer >> {
     @Override
-    public void flatMap(TweetData tweetData, Collector<Tuple3<String, String, String>> out) throws Exception {
-
-
-        Tuple3<String, String, String> fullTup = new Tuple3<>("s", "s", "s");
+    public void flatMap(TweetData tweetData, Collector<Tuple3<String, String, Integer>> out) throws Exception {
+        System.out.println(tweetData.tweetText);
+        Tuple3<String, String, Integer> fullTup = new Tuple3<>(tweetData.tweetText, "s", 1);
 
         out.collect(fullTup);
         int i = 0;
